@@ -1,40 +1,58 @@
 from tkinter import *
 from tkinter import messagebox
 
-
 # обробник події натискання кнопки "Завершити тест"
 def elem_rez():
-    messagebox.showinfo('Тест', 'Тест завершено.')
+    messagebox.showinfo('Результат', test) # виведення повідомлення про результат
+    edit_test(test, 4, str(text1.get("1.0", END)))
+    result_file.write(str(e1.get())+" "+str(e2.get())+" "+str(test)) # запис результату до файлу
+    result_file.close
     root.destroy()
-
 
 # функції при натисненні на кнопки "Зберегти відповідь"
 # Radiobutton1
 def result():
     if var.get() == 2:
         b1['bg'] = 'pale green'
+        edit_test(test, 1, "1 бал")
     else:
         b1['bg'] = 'red'
     b1['state'] = 'disabled'
-
 
 # Radiobutton2
 def result1():
     if var0.get() == 2:
         b2['bg'] = 'pale green'
+        edit_test(test, 2, "1 бал")
     else:
         b2['bg'] = 'red'
     b2['state'] = 'disabled'
-
 
 # CheckButton
 def result2():
     if var2.get() == 1 and var4.get() == 1 and var5.get() == 1:
         b3['bg'] = 'pale green'
+        edit_test(test, 3, "1 бал")
     else:
         b3['bg'] = 'red'
     b3['state'] = 'disabled'
 
+# оцінка правильності відповіді
+def edit_test(data, key, bal):
+    data[key] = bal
+
+# словник для збереження результатів тесту
+test = {1: "0 балів",
+        2: "0 балів",
+        3: "0 балів",
+        4: "Потребує перевірки викладача"}
+
+# відкриття файлу для запису результату тесту
+file_test = "result_test.txt"
+try:
+    result_file=open(file_test, "w")
+except:
+    print("File", file_test, "wasn't opened!")
 
 # створення головного вікна форми
 root = Tk()
@@ -129,9 +147,8 @@ text1.pack()
 
 L_R4 = Label(root, text="")
 L_R4.pack()
-# кнопка завершення тестування
+# кнопка завершення тестування , виведення повідомлення про результат
 button1 = Button(root, text='Завершити тест', bg="ivory3", width=20, height=3, font='ubuntu 10', command=elem_rez)
 button1.pack()
 # запуск головного циклу обробника форми
 root.mainloop()
-
